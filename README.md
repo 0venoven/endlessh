@@ -119,26 +119,48 @@ Change endlessh port to 22
 
 - sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/endlessh
 
-- Create config files
+Create config files
     - `sudo mkdir -p /etc/endlessh`
     - `sudo vim /etc/endlessh/config`
         - Add in a single line “Port 22”.
      
-- Start endlessh
+Start endlessh
     - `sudo systemctl start endlessh`
-- Verifying endlessh is running
+ 
+Verifying endlessh is running
     - If netstat isn’t installed
         - `sudo apt install net-tools`
     - `sudo netstat -tulpn | grep endlessh`
  
 ![image](https://github.com/0venoven/endlessh/assets/51714567/f1692e31-f9d5-4ddb-a11d-c3655267cc79)
 
-## To disable ssh
+## Testing endlessh
 
+- `ssh ivan@192.168.158.129`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/d7486ed7-cbc1-4e8a-a2fa-26ae11392e63)
+
+- The ssh connection will be stuck in this state indefinitely.
+
+- ssh -vvv ivan@192.168.158.129
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/84a3d588-4223-4d55-9784-2de754aa0ce4)
+
+- As we can see the banner just keeps printing out random stuff very slowly.
+
+- nmap will also be similarly stuck in this state.
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/d79ea667-8b87-4f0c-a077-c930ac36471c)
+
+## Disable services (if needed)
+
+To disable ssh
 - `sudo systemctl disable --now ssh`
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/297646f8-a836-4d1c-8152-31566b47c42d)
 
+To disable endlessh
+- `sudo systemctl stop endlessh`
 
 ## Resources and Acknowledgments
 ### endlessh by skeeto
