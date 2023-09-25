@@ -14,23 +14,23 @@ Install and start ssh server
 
 Check ssh status
 
-`sudo systemctl status ssh`
+- `sudo systemctl status ssh`
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/306859a8-45a4-4312-9be1-9bfa4185c871)
 
 Use nmap to run a scan
 
-`nmap -T4 -A 192.168.158.129`
+- `nmap -T4 -A 192.168.158.129`
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/d83474ce-d48b-4c1b-9687-2feaa974bbb8)
 
 Some system/service output from the scan/brute force (THC-hydra)
 
-`sudo systemctl status ssh` after the nmap scan
+- `sudo systemctl status ssh` after the nmap scan
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/615d160d-2f2f-45e7-b3ab-edf56c3f88f1)
 
-`sudo systemctl status ssh` when running a hydra with wordlist
+- `sudo systemctl status ssh` when running a hydra with wordlist
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/7170373b-05af-4854-87f3-d1f307ee4dd0)
 
