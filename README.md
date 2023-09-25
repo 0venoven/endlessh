@@ -51,6 +51,105 @@ Checking users logged in after logging in from another machine
 
 ![image](https://github.com/0venoven/endlessh/assets/51714567/e4c3252b-91e2-4017-ab2d-7c9ecba00d1f)
 
+## Set up endlessh
+
+Clone endlessh repo
+
+- `git clone https://github.com/skeeto/endlessh`
+- `cd endlessh`
+
+Installing dependencies
+
+- `sudo apt install build-essential libc6-dev`
+
+Compile binary
+
+- `make`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/aeaefef3-c9de-4621-825e-1fb3735b3b58)
+
+Move the executable to the local binary folder
+
+- `sudo mv endlessh /usr/local/bin/`
+
+By copying the `.service` file to `/etc/systemd/system/` and reloading the units, the endlessh service becomes known to systemd, enabling us to manage it using `systemd` commands like `systemctl`.
+
+- `sudo cp util/endlessh.service /etc/systemd/system/`
+    - What are unit files
+        - https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
+
+Use `systemctl` to enable the endlessh service (that is now known to `systemd`)
+
+- `sudo systemctl enable endlessh`
+    - Enable `systemd` service
+ 
+![image](https://github.com/0venoven/endlessh/assets/51714567/31051109-c95d-44c3-9c87-8da9de8ba61a)
+
+- `sudo systemctl daemon-reload`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/42b7ad2b-cd63-4d82-9f1f-1918de946964)
+- Otherwise we’ll be asked to run systemctl daemon-reload to reload units when we try to start the endlessh service.
+
+
+Change real ssh port to another port
+- `sudo vim /etc/ssh/sshd_config`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/e004222a-cf96-4a6e-a4a3-efc87bfc6e34)
+
+- Comment out the port and use some other port (that is more than 1024 or some uncommon port).
+
+Allow firewall on port 2244
+
+- `sudo ufw allow 2244/tcp`
+
+Restart ssh
+
+- `sudo systemctl restart ssh`
+
+Check ssh is running on 2244
+
+- `sudo netstat -tulpn | grep ssh`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/7c5a88c5-7500-4dec-8b1f-74e1c8a4f9c7)
+
+Change endlessh port to 22
+- `sudo vim /etc/systemd/system/endlessh.service`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/7f5b497d-4fc7-44e8-8607-cf0c7f48f316)
+
+- sudo setcap 'cap_net_bind_service=+ep' /usr/local/bin/endlessh
+
+- Create config files
+    - `sudo mkdir -p /etc/endlessh`
+    - `sudo vim /etc/endlessh/config`
+        - Add in a single line “Port 22”.
+     
+- Start endlessh
+    - `sudo systemctl start endlessh`
+- Verifying endlessh is running
+    - If netstat isn’t installed
+        - `sudo apt install net-tools`
+    - `sudo netstat -tulpn | grep endlessh`
+ 
+![image](https://github.com/0venoven/endlessh/assets/51714567/f1692e31-f9d5-4ddb-a11d-c3655267cc79)
+
+## To disable ssh
+
+- `sudo systemctl disable --now ssh`
+
+![image](https://github.com/0venoven/endlessh/assets/51714567/297646f8-a836-4d1c-8152-31566b47c42d)
+
+
 ## Resources and Acknowledgments
 ### endlessh by skeeto
-* https://github.com/skeeto/endlessh
+- https://github.com/skeeto/endlessh
+
+### Youtube video walkthrough by Ilya Kozorezov
+- https://www.youtube.com/watch?v=4JECQLXFtYA
+
+### Others
+- https://linuxize.com/post/how-to-enable-ssh-on-ubuntu-20-04/
+- https://www.cyberciti.biz/faq/howto-start-stop-ssh-server/
+- https://ubuntu.com/server/docs/service-openssh
+- https://stackoverflow.com/questions/20840012/ssh-remote-host-identification-has-changed
+- https://www.digitalocean.com/community/tutorials/understanding-systemd-units-and-unit-files
