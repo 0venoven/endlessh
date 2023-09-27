@@ -9,7 +9,7 @@ install_dependencies() {
     update_status=$?
 
     # Check if there were any errors in the update output
-    if [[ "$update_output" =~ "Temporary failure resolving" ]]; then
+    if [ "$update_output" =~ "Temporary failure resolving" ]; then
         echo "Warning: Failed to update package index. Check your internet connection."
         echo "Proceeding with package installation using cached index..."
     fi
