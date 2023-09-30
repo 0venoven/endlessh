@@ -23,7 +23,7 @@ install_dependencies() {
     fi
 
     # Redirect both stdout and stderr to a log file and execute apt install
-    sudo apt install -y openssh-server build-essential libc6-dev git netstat >> /tmp/install_log.txt 2>&1
+    apt install -y openssh-server build-essential libc6-dev git netstat >> /tmp/install_log.txt 2>&1
 
     # Capture the exit status of apt install immediately
     install_status=$?
@@ -37,7 +37,17 @@ install_dependencies() {
     fi
 }
 
-# TODO: change port of real ssh to something preferably higher than port 1024
+# Change port of real ssh to something preferably higher than port 1024
+configure_ssh_and_firewall() {
+    # Change SSH port in /etc/ssh/sshd_config to 2244
+    sed -i 's/Port 22/Port 2244/' /etc/ssh/sshd_config
+
+    # Allow firewall on port 2244
+    ufw allow 2244/tcp
+
+    # Restart SSH
+    systemctl restart ssh
+}
 
 # Clone, configure, compile and enable endlessh service
 install_endlessh() {
@@ -45,11 +55,11 @@ install_endlessh() {
     mkdir ~/endlessh
     cd ~/endlessh
     make
-    sudo mv endlessh /usr/local/bin/
-    sudo cp util/endlessh.service /etc/systemd/system/
-    sudo systemctl enable endlessh
-    sudo systemctl daemon-reload
-    sudo systemctl start endlessh
+    mv endlessh /usr/local/bin/
+    cp util/endlessh.service /etc/systemd/system/
+    systemctl enable endlessh
+    systemctl daemon-reload
+    systemctl start endlessh
 }
 
 # Main script
