@@ -58,6 +58,8 @@ install_endlessh() {
     mv endlessh /usr/local/bin/
     cp util/endlessh.service /etc/systemd/system/
     systemctl enable endlessh
+
+    # daemon-reload to reload unit file for the endlessh.service
     systemctl daemon-reload
     systemctl start endlessh
 }
@@ -66,6 +68,6 @@ install_endlessh() {
 echo "Setting up Endlessh on Ubuntu..."
 
 install_dependencies
-# TODO: change ssh port first
+configure_ssh_and_firewall
 install_endlessh
 # TODO: maybe netstat and get verification that the endlessh and real ssh services are running
