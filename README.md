@@ -2,7 +2,7 @@
 
 ## Overview
 
-Endlessh is an ssh tarpit which will stall anyone indefinitely by slowly serving up an endless banner when trying to log into the endlessh service. It can swapped with the real ssh service on port 22 to deceive malicious actors (think script runners, script kiddies, botnets) into attacking the endlessh server, possibly wasting their resources (albeit likely not significantly so).
+[Endlessh](https://github.com/skeeto/endlessh) by skeeto is an ssh tarpit which will stall anyone indefinitely by slowly serving up an endless banner when trying to log into the endlessh service. It can swapped with the real ssh service on port 22 to deceive malicious actors (think script runners, script kiddies, botnets) into attacking the endlessh server, possibly wasting their resources (albeit likely not significantly so).
 
 Check out [autoswap_endlessh.sh](https://github.com/0venoven/endlessh/blob/main/autoswap_endlessh.sh) for the automated script to swap and set-up endlessh.
 
